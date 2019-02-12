@@ -1,42 +1,17 @@
 <?php
 /**
- * Projectname:   ForEach
- * Version:       0.6.1
- * Author:        Fatih Guersu | fg at webdevels dot de
- * Last modified: 22.09.2007
- * Last modified: 26.04.2009
- * Last modified: 06.12.2016
- * Copyright (C): 2006 Fatih Guersu, all rights reserved
- * 
- * GNU General Public License (Version 2, June 1991)
- * This program is free software; you can redistribute
- * it and/or modify it under the terms of the GNU
- * General Public License as published by the Free
- * Software Foundation; either version 2 of the License,
- * or (at your option) any later version.
- *
- * This program is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A
- * PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
- * 
- * Description:
- * Will show you all keys and values in arrays & multidimensional arrays
- */
-
-/**
  * Simple PHP Function that will dump an Array in a visual HTML Table.
+ * Will show you all keys and values in arrays & multidimensional arrays
  *
  * Usage: include this file & run fe()
- * include 'path/to/this/fe.php';
- * $var = fe($myArray); // will return html code to $var
- * fe($myArray, false); // will echo out the html code
+ *   include 'path/to/this/fe.php';
+ *   $var = fe($myArray); // will return html code to $var
+ *   fe($myArray, false); // will echo out the html code
  * 
  * @param   array   $inputArray this is the array/variable for output
  * @param   bool    $returnOuput if true the output will be returned, false will produce a direct echo
  * @param   bool    $firstRun (internal use) do not change this! 
- * 
+ * @author  Fatih Gürsu <fg@webdevels.de>
  * @return  string/void based on $returnOuput: true=string (html table), false=direct echo 
  */
 function fe($inputArray, $returnOuput=true, $firstRun=true) {
