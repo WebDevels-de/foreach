@@ -6,3 +6,5 @@ Just include the file fe.php and start using it with:
 echo fe($myArray);
 or
 $var = fe($myArray);
+
+[Check out the short Wiki](../../wiki)
