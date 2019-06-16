@@ -1,122 +1,133 @@
 <?php
+ /***********************************************************************
+  * Projectname:   For-Each
+  * Version:       0.6.1
+  * Author:        Fatih Guersu | fg at webdevels dot de
+  * Last modified: 22.09.2007
+  * Last modified: 26.04.2009
+  * Last modified: 06.12.2016
+  * Last modified: 11.06.2019
+  * Last modified: 16.06.2019
+  * Copyright (C): 2006 Fatih Guersu, all rights reserved
+  *
+  * GNU General Public License (Version 2, June 1991)
+  * This program is free software; you can redistribute
+  * it and/or modify it under the terms of the GNU
+  * General Public License as published by the Free
+  * Software Foundation; either version 2 of the License,
+  * or (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will
+  * be useful, but WITHOUT ANY WARRANTY; without even the
+  * implied warranty of MERCHANTABILITY or FITNESS FOR A
+  * PARTICULAR PURPOSE. See the GNU General Public License
+  * for more details.
+  *
+  * Description:
+  * Will show you all keys and values in arrays & multidimensional arrays
+  ************************************************************************/
+
 /**
- * Simple PHP Function that will dump an Array in a visual HTML Table.
- * Will show you all keys and values in arrays & multidimensional arrays
+ * Shows the content of an array/variable, better alternative to var_dump.
  *
- * Usage: include this file & run fe()
- *   include 'path/to/this/fe.php';
- *   $var = fe($myArray); // will return html code to $var
- *   fe($myArray, false); // will echo out the html code
- * 
- * @param   array   $inputArray this is the array/variable for output
- * @param   bool    $returnOuput if true the output will be returned, false will produce a direct echo
- * @param   bool    $firstRun (internal use) do not change this! 
- * @author  Fatih Gürsu <fg@webdevels.de>
- * @return  string/void based on $returnOuput: true=string (html table), false=direct echo 
+ * @param   mixed   $input the array/variable to show
+ * @param   boolean $firstRun for internal use only (do not use or change it)
+ * @return  string  html table with arrays/variables content
  */
-function fe($inputArray, $returnOuput=true, $firstRun=true) {
+function fe($input, $firstRun=true) {
+    defined('NL') or define('NL', NL);
+
     $op = '';
+    $style = '';
 
-    if(is_array($inputArray)) {
-        $op .= ($firstRun == true) ? '<table border="1" class="fetable" style="border-collapse:separate; border-spacing:2px 1px; background-color:#fff; border:1px solid #000; margin:4px">'.PHP_EOL : '<table border="1" style="border-collapse:separate; border-spacing:2px 1px; background-color:#fff; border:1px solid #fff">'.PHP_EOL;
+    $style .= '<style>'.NL;
+    $style .= 'tr { vertical-align:top; }'.NL;
+    $style .= '.fe-table-outer { border-collapse:separate; border-spacing:2px 1px; background-color:#fff; border:1px dotted #000; margin:8px; }'.NL;
+    $style .= '.fe-table-inner { border-collapse:separate; border-spacing:2px 1px; border:0px solid #336699; }'.NL;
+    $style .= '.fe-array-name { padding:2px 4px; background-color:#069; border:none; color:#fff; font-weight:bold; }'.NL;
+    $style .= '.fe-array-child { padding:8px 0px; background-color:transparent; border:none; color:#333; font-weight:normal; }'.NL;
+    $style .= '.fe-array-key { padding:2px 4px; background-color:#d5d5d5; border:none; color:#069; font-weight:bold; }'.NL;
+    $style .= '.fe-array-var { padding:2px 4px; background-color:#f5f5f5; border:none; color:#333; font-weight:normal; }'.NL;
+    $style .= '.fe-empty { padding:8px 10px; background-color:#a5011c; border:none; color:#fff; font-weight:normal; }'.NL;
+    $style .= '</style>'.NL;
 
-        foreach($inputArray as $key1 => $val1) {
-            if(is_array($inputArray[$key1])) {
-                $op .= '<tr style="vertical-align:top">'.PHP_EOL;
-                $op .= '<td style="padding:2px 4px; background-color:#069; border:none; color:#fff; font-weight:bold">[\''.$key1.'\']</td>'.PHP_EOL;
-                $op .= '<td style="padding:2px 4px; background-color:#fff; border:none; color:#333; font-weight:normal">'.PHP_EOL;
-                $op .= fe($inputArray[$key1], true, false);
+    if(is_array($input)) {
+        $op .= ($firstRun == true) ? '<table class="fe-table-outer rounded">'.NL : '<table class="fe-table-inner rounded">'.NL;
+        if(count($input) === 0) {
+            $op .= '<tr class="rounded">'.NL;
+            $op .= '<td class="fe-array-child fe-empty rounded">Array given but no entries found.</td>'.NL;
+            $op .= '</tr>'.NL;
+        }
+        foreach($input as $key1 => $val1) {
+            if(is_array($input[$key1])) {
+                $op .= '<tr class="rounded">'.NL;
+                $op .= '<td class="fe-array-name rounded" data-toggle="tooltip" data-placement="top" title="count( '.count($input[$key1]).' )">[\''.$key1.'\']</td>'.NL;
+                $op .= '<td class="fe-array-child rounded">'.NL;
+                $op .= fe($input[$key1], false);
+                $op .= '</td>'.NL;
+                $op .= '</tr>'.NL;
             } else {
-                $op .= '<tr style="vertical-align:top" data-popup="tooltip" data-placement="left" data-original-title="gettype( '.strtoupper(gettype($val1)).' )" title="gettype( '.strtoupper(gettype($val1)).' )">'.PHP_EOL;
-                $op .= '<td style="padding:2px 4px; background-color:#CCC; border:none; color:#069; font-weight:bold">[\''.$key1.'\']</td>'.PHP_EOL;
-                $op .= '<td style="padding:2px 4px; background-color:#f5f5f5; border:none; color:#333; font-weight:normal; word-break:break-word">'.PHP_EOL;
-                if(is_bool($val1)) {
-                    if($val1 === true) {
-                        $op .= 'TRUE'.PHP_EOL;
-                    } elseif($val1 === false) {
-                        $op .= 'FALSE'.PHP_EOL;
-                    } else {
-                        $op .= 'unknown (bool)'.PHP_EOL;
-                    }
-                } elseif(is_float($val1) || is_int($val1)) {
-                    $op .= $val1.PHP_EOL;
-                } elseif(is_null($val1)) {
-                    $op .= 'NULL';
-                } elseif(is_string($val1)) {
-                    if(is_numeric($val1)) {
-                        $op .= '"'.$val1.'"'.PHP_EOL;
-                    } else {
-                        if(empty($val1)) {
-                            $op .= '(empty)'.PHP_EOL;
-                        } else {
-                            $op .= $val1.PHP_EOL;
-                        }
-                    }
-                } elseif(is_object($val1)) {
-                    $op .= 'OBJECT';
-                } elseif(is_resource($val1)) {
-                    $op .= 'RESOURCE';
-                } elseif(is_scalar($val1)) {
-                    $op .= 'SCALAR';
-                } else {
-                    $op .= 'unkown: '.$val1.PHP_EOL;
-                }
+                $op .= '<tr data-toggle="tooltip" data-placement="right" title="gettype( '.strtoupper(gettype($val1)).' )">'.NL;
+                $op .= '<td class="fe-array-key rounded">[\''.$key1.'\']</td>'.NL;
+                $op .= '<td class="fe-array-var rounded">'.NL;
+                $op .= feValueHelper($val1);
+                $op .= '</td>'.NL;
+                $op .= '</tr>'.NL;
             }
-            $op .= '</td>'.PHP_EOL;
-            $op .= '</tr>'.PHP_EOL;
         }
 
-        $op .= '</table>'.PHP_EOL;
+        $op .= '</table>'.NL;
     } else {
-        $op .= '<table border="1" style="border-collapse:separate; border-spacing:2px 1px; background-color:#fff; border:1px solid #000; margin:4px">'.PHP_EOL;
-        $op .= '<tr>'.PHP_EOL;
-        $op .= '<td colspan="2" style="padding:2px 4px; background-color:#069; border:none; color:#fff; font-weight:bold">Info: fe() needs an array to proceed.</td>'.PHP_EOL;
-        $op .= '</tr>'.PHP_EOL;
-        $op .= '<tr style="vertical-align:top" data-popup="tooltip" data-placement="left" data-original-title="gettype( '.strtoupper(gettype($inputArray)).' )"  title="gettype( '.strtoupper(gettype($inputArray)).' )">'.PHP_EOL;
-        $op .= '<td style="padding:2px 4px; background-color:#CCC; border:none; color:#069; font-weight:bold">Your values content is:</td>'.PHP_EOL;
-        $op .= '<td style="padding:2px 4px; background-color:#f5f5f5; border:none; color:#333; font-weight:normal">'.PHP_EOL;
-        if(is_bool($inputArray)) {
-            if($inputArray === true) {
-                $op .= 'TRUE'.PHP_EOL;
-            } elseif($inputArray === false) {
-                $op .= 'FALSE'.PHP_EOL;
-            } else {
-                $op .= 'unknown (bool)'.PHP_EOL;
-            }
-        } elseif(is_float($inputArray) || is_int($inputArray)) {
-            $op .= $inputArray.PHP_EOL;
-        } elseif(is_null($inputArray)) {
-            $op .= 'NULL';
-        } elseif(is_string($inputArray)) {
-            if(is_numeric($inputArray)) {
-                $op .= '"'.$inputArray.'"'.PHP_EOL;
-            } else {
-                if(empty($inputArray)) {
-                    $op .= '(empty)'.PHP_EOL;
-                } else {
-                    $op .= $inputArray.PHP_EOL;
-                }
-            }
-        } elseif(is_object($inputArray)) {
-            $op .= 'OBJECT';
-        } elseif(is_resource($inputArray)) {
-            $op .= 'RESOURCE';
-        } elseif(is_scalar($inputArray)) {
-            $op .= 'SCALAR';
-        } else {
-            $op .= 'unkown: '.$inputArray.PHP_EOL;
-        }
-        $op .= '</td>'.PHP_EOL;
-        $op .= '</tr>'.PHP_EOL;
-
-
-        $op .= '</table>'.PHP_EOL;
+        $op .= '<table class="fe-table-outer rounded">'.NL;
+        $op .= '<tr data-toggle="tooltip" data-placement="right" title="gettype( '.strtoupper(gettype($input)).' )">'.NL;
+        $op .= '<td class="fe-array-key rounded">Content of Variable:</td>'.NL;
+        $op .= '<td class="fe-array-var rounded">'.NL;
+        $op .= feValueHelper($input);
+        $op .= '</td>'.NL;
+        $op .= '</tr>'.NL;
+        $op .= '</table>'.NL;
     }
 
-    if($returnOuput == FALSE) {
-        echo $op;
+    return ($firstRun===true ? $style : '').$op;
+}
+
+/**
+ * Helper for fe() function
+ *
+ * @param   mixed   $value variables content to show infos about
+ * @return  string  infos about the content, printable infos (string, numbers) are shown directly
+ */
+function feValueHelper($value) {
+    if(is_bool($value)) {
+        if($value === true) {
+            return 'TRUE';
+        } elseif($value === false) {
+            return 'FALSE';
+        } else {
+            return 'unknown (bool)'; // ?
+        }
+    } elseif(is_float($value) || is_int($value)) {
+        return $value;
+    } elseif(is_null($value)) {
+        return 'NULL';
+    } elseif(is_string($value)) {
+        if(is_numeric($value)) {
+            return '"'.$value.'"';
+        } else {
+            if(empty($value)) {
+                return '(empty)';
+            } else {
+                return $value;
+            }
+        }
+    } elseif(is_object($value)) {
+        return 'OBJECT';
+    } elseif(is_resource($value)) {
+        return 'RESOURCE';
+    } elseif(is_scalar($value)) {
+        return 'SCALAR';
     } else {
-        return $op;
+        return 'unkown: '.$value;
     }
 }
 ?>
