@@ -35,7 +35,7 @@
  * @return  string  html table with arrays/variables content
  */
 function fe($input, $firstRun=true) {
-    defined('NL') or define('NL', NL);
+    defined('NL') or define('NL', PHP_EOL);
 
     $op = '';
     $style = '';
