@@ -35,57 +35,57 @@
  * @return  string  html table with arrays/variables content
  */
 function fe($input, $firstRun=true) {
-    defined('NL') or define('NL', PHP_EOL);
+    $nl = PHP_EOL;
 
     $op = '';
     $style = '';
 
-    $style .= '<style>'.NL;
-    $style .= 'tr { vertical-align:top; }'.NL;
-    $style .= '.fe-table-outer { border-collapse:separate; border-spacing:2px 1px; background-color:#fff; border:1px dotted #000; margin:8px; }'.NL;
-    $style .= '.fe-table-inner { border-collapse:separate; border-spacing:2px 1px; border:0px solid #336699; }'.NL;
-    $style .= '.fe-array-name { padding:2px 4px; background-color:#069; border:none; color:#fff; font-weight:bold; }'.NL;
-    $style .= '.fe-array-child { padding:8px 0px; background-color:transparent; border:none; color:#333; font-weight:normal; }'.NL;
-    $style .= '.fe-array-key { padding:2px 4px; background-color:#d5d5d5; border:none; color:#069; font-weight:bold; }'.NL;
-    $style .= '.fe-array-var { padding:2px 4px; background-color:#f5f5f5; border:none; color:#333; font-weight:normal; }'.NL;
-    $style .= '.fe-empty { padding:8px 10px; background-color:#a5011c; border:none; color:#fff; font-weight:normal; }'.NL;
-    $style .= '</style>'.NL;
+    $style .= '<style>'.$nl;
+    $style .= 'tr { vertical-align:top; }'.$nl;
+    $style .= '.fe-table-outer { border-collapse:separate; border-spacing:2px 1px; background-color:#fff; border:1px dotted #000; margin:8px; }'.$nl;
+    $style .= '.fe-table-inner { border-collapse:separate; border-spacing:2px 1px; border:0px solid #336699; }'.$nl;
+    $style .= '.fe-array-name { padding:2px 4px; background-color:#069; border:none; color:#fff; font-weight:bold; }'.$nl;
+    $style .= '.fe-array-child { padding:8px 0px; background-color:transparent; border:none; color:#333; font-weight:normal; }'.$nl;
+    $style .= '.fe-array-key { padding:2px 4px; background-color:#d5d5d5; border:none; color:#069; font-weight:bold; }'.$nl;
+    $style .= '.fe-array-var { padding:2px 4px; background-color:#f5f5f5; border:none; color:#333; font-weight:normal; }'.$nl;
+    $style .= '.fe-empty { padding:8px 10px; background-color:#a5011c; border:none; color:#fff; font-weight:normal; }'.$nl;
+    $style .= '</style>'.$nl;
 
     if(is_array($input)) {
-        $op .= ($firstRun == true) ? '<table class="fe-table-outer rounded">'.NL : '<table class="fe-table-inner rounded">'.NL;
+        $op .= ($firstRun == true) ? '<table class="fe-table-outer rounded">'.$nl : '<table class="fe-table-inner rounded">'.$nl;
         if(count($input) === 0) {
-            $op .= '<tr class="rounded">'.NL;
-            $op .= '<td class="fe-array-child fe-empty rounded">Array given but no entries found.</td>'.NL;
-            $op .= '</tr>'.NL;
+            $op .= '<tr class="rounded">'.$nl;
+            $op .= '<td class="fe-array-child fe-empty rounded">Array given but no entries found.</td>'.$nl;
+            $op .= '</tr>'.$nl;
         }
         foreach($input as $key1 => $val1) {
             if(is_array($input[$key1])) {
-                $op .= '<tr class="rounded">'.NL;
-                $op .= '<td class="fe-array-name rounded" data-toggle="tooltip" data-placement="top" title="count( '.count($input[$key1]).' )">[\''.$key1.'\']</td>'.NL;
-                $op .= '<td class="fe-array-child rounded">'.NL;
+                $op .= '<tr class="rounded">'.$nl;
+                $op .= '<td class="fe-array-name rounded" data-toggle="tooltip" data-placement="top" title="count( '.count($input[$key1]).' )">[\''.$key1.'\']</td>'.$nl;
+                $op .= '<td class="fe-array-child rounded">'.$nl;
                 $op .= fe($input[$key1], false);
-                $op .= '</td>'.NL;
-                $op .= '</tr>'.NL;
+                $op .= '</td>'.$nl;
+                $op .= '</tr>'.$nl;
             } else {
-                $op .= '<tr data-toggle="tooltip" data-placement="right" title="gettype( '.strtoupper(gettype($val1)).' )">'.NL;
-                $op .= '<td class="fe-array-key rounded">[\''.$key1.'\']</td>'.NL;
-                $op .= '<td class="fe-array-var rounded">'.NL;
+                $op .= '<tr data-toggle="tooltip" data-placement="right" title="gettype( '.strtoupper(gettype($val1)).' )">'.$nl;
+                $op .= '<td class="fe-array-key rounded">[\''.$key1.'\']</td>'.$nl;
+                $op .= '<td class="fe-array-var rounded">'.$nl;
                 $op .= feValueHelper($val1);
-                $op .= '</td>'.NL;
-                $op .= '</tr>'.NL;
+                $op .= '</td>'.$nl;
+                $op .= '</tr>'.$nl;
             }
         }
 
-        $op .= '</table>'.NL;
+        $op .= '</table>'.$nl;
     } else {
-        $op .= '<table class="fe-table-outer rounded">'.NL;
-        $op .= '<tr data-toggle="tooltip" data-placement="right" title="gettype( '.strtoupper(gettype($input)).' )">'.NL;
-        $op .= '<td class="fe-array-key rounded">Content of Variable:</td>'.NL;
-        $op .= '<td class="fe-array-var rounded">'.NL;
+        $op .= '<table class="fe-table-outer rounded">'.$nl;
+        $op .= '<tr data-toggle="tooltip" data-placement="right" title="gettype( '.strtoupper(gettype($input)).' )">'.$nl;
+        $op .= '<td class="fe-array-key rounded">Content of Variable:</td>'.$nl;
+        $op .= '<td class="fe-array-var rounded">'.$nl;
         $op .= feValueHelper($input);
-        $op .= '</td>'.NL;
-        $op .= '</tr>'.NL;
-        $op .= '</table>'.NL;
+        $op .= '</td>'.$nl;
+        $op .= '</tr>'.$nl;
+        $op .= '</table>'.$nl;
     }
 
     return ($firstRun===true ? $style : '').$op;
