@@ -69,7 +69,7 @@ function fe($input, $firstRun=true) {
             } else {
                 $op .= '<tr data-toggle="tooltip" data-placement="right" title="gettype( '.strtoupper(gettype($val1)).' )">'.$nl;
                 $op .= '<td class="fe-array-key rounded">[\''.$key1.'\']</td>'.$nl;
-                $op .= '<td class="fe-array-var rounded">'.$nl;
+                $op .= '<td class="fe-array-var rounded">';
                 $op .= feValueHelper($val1);
                 $op .= '</td>'.$nl;
                 $op .= '</tr>'.$nl;
@@ -81,7 +81,7 @@ function fe($input, $firstRun=true) {
         $op .= '<table class="fe-table-outer rounded">'.$nl;
         $op .= '<tr data-toggle="tooltip" data-placement="right" title="gettype( '.strtoupper(gettype($input)).' )">'.$nl;
         $op .= '<td class="fe-array-key rounded">Content of Variable:</td>'.$nl;
-        $op .= '<td class="fe-array-var rounded">'.$nl;
+        $op .= '<td class="fe-array-var rounded">';
         $op .= feValueHelper($input);
         $op .= '</td>'.$nl;
         $op .= '</tr>'.$nl;
