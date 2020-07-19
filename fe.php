@@ -34,7 +34,7 @@
  * @param   boolean $firstRun for internal use only (do not use or change it)
  * @return  string  html table with arrays/variables content
  */
-function fe($input, $firstRun=true) {
+function fe($input, $length=false, $firstRun=true) {
     $nl = PHP_EOL;
 
     $op = '';
@@ -52,7 +52,7 @@ function fe($input, $firstRun=true) {
     $style .= '</style>'.$nl;
 
     if(is_array($input)) {
-        $op .= ($firstRun == true) ? '<table class="fe-table-outer rounded">'.$nl : '<table class="fe-table-inner rounded">'.$nl;
+        $op .= ($firstRun == true) ? '<table data-toggle="tooltip" data-placement="top" title="count( '.count($input).'  )" class="fe-table-outer rounded">'.$nl : '<table class="fe-table-inner rounded">'.$nl;
         if(count($input) === 0) {
             $op .= '<tr class="rounded">'.$nl;
             $op .= '<td class="fe-array-child fe-empty rounded">Array given but no entries found.</td>'.$nl;
@@ -63,14 +63,14 @@ function fe($input, $firstRun=true) {
                 $op .= '<tr class="rounded">'.$nl;
                 $op .= '<td class="fe-array-name rounded" data-toggle="tooltip" data-placement="top" title="count( '.count($input[$key1]).' )">[\''.$key1.'\']</td>'.$nl;
                 $op .= '<td class="fe-array-child rounded">'.$nl;
-                $op .= fe($input[$key1], false);
+                $op .= fe($input[$key1], $length, false);
                 $op .= '</td>'.$nl;
                 $op .= '</tr>'.$nl;
             } else {
-                $op .= '<tr data-toggle="tooltip" data-placement="right" title="gettype( '.strtoupper(gettype($val1)).' )">'.$nl;
+                $op .= '<tr data-toggle="tooltip" data-placement="right" data-html="true" title="gettype( '.strtoupper(gettype($val1)).' )<br>strlen( '.strlen($val1).' )">'.$nl;
                 $op .= '<td class="fe-array-key rounded">[\''.$key1.'\']</td>'.$nl;
                 $op .= '<td class="fe-array-var rounded">';
-                $op .= feValueHelper($val1);
+                $op .= feValueHelper($val1, $length);
                 $op .= '</td>'.$nl;
                 $op .= '</tr>'.$nl;
             }
@@ -79,10 +79,10 @@ function fe($input, $firstRun=true) {
         $op .= '</table>'.$nl;
     } else {
         $op .= '<table class="fe-table-outer rounded">'.$nl;
-        $op .= '<tr data-toggle="tooltip" data-placement="right" title="gettype( '.strtoupper(gettype($input)).' )">'.$nl;
-        $op .= '<td class="fe-array-key rounded">Content of Variable:</td>'.$nl;
+        $op .= '<tr data-toggle="tooltip" data-placement="right" data-html="true" title="gettype( '.strtoupper(gettype($input)).' )<br>strlen( '.strlen($input).' )">'.$nl;
+        $op .= '<td class="fe-array-key rounded">NOT ARRAY:</td>'.$nl;
         $op .= '<td class="fe-array-var rounded">';
-        $op .= feValueHelper($input);
+        $op .= feValueHelper($input, $length);
         $op .= '</td>'.$nl;
         $op .= '</tr>'.$nl;
         $op .= '</table>'.$nl;
@@ -97,7 +97,7 @@ function fe($input, $firstRun=true) {
  * @param   mixed   $value variables content to show infos about
  * @return  string  infos about the content, printable infos (string, numbers) are shown directly
  */
-function feValueHelper($value) {
+function feValueHelper($value, $length) {
     if(is_bool($value)) {
         if($value === true) {
             return 'TRUE';
