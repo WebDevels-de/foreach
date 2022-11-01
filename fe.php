@@ -67,7 +67,7 @@ function fe($input, $length=false, $firstRun=true) {
                 $op .= '</td>'.$nl;
                 $op .= '</tr>'.$nl;
             } else {
-                $op .= '<tr data-toggle="tooltip" data-placement="right" data-html="true" title="gettype( '.strtoupper(gettype($val1)).' )<br>strlen( '.strlen($val1).' )">'.$nl;
+                $op .= '<tr data-toggle="tooltip" data-placement="right" data-html="true" title="gettype( '.strtoupper(gettype($val1)).' )<br>strlen( '.(is_null($val1) ? '' : strlen($val1)).' )">'.$nl;
                 $op .= '<td class="fe-array-key rounded">[\''.$key1.'\']</td>'.$nl;
                 $op .= '<td class="fe-array-var rounded">';
                 $op .= feValueHelper($val1, $length);
