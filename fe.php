@@ -52,7 +52,7 @@ function fe($input, $length=false, $firstRun=true) {
     $style .= '</style>'.$nl;
 
     if(is_array($input)) {
-        $op .= ($firstRun == true) ? '<table data-toggle="tooltip" data-placement="top" title="count( '.count($input).'  )" class="fe-table-outer rounded">'.$nl : '<table class="fe-table-inner rounded">'.$nl;
+        $op .= ($firstRun == true) ? '<table data-toggle="tooltip" data-placement="top" data-bs-placement="top" title="count( '.count($input).'  )" class="fe-table-outer rounded">'.$nl : '<table class="fe-table-inner rounded">'.$nl;
         if(count($input) === 0) {
             $op .= '<tr class="rounded">'.$nl;
             $op .= '<td class="fe-array-child fe-empty rounded">Array given but no entries found.</td>'.$nl;
@@ -61,13 +61,13 @@ function fe($input, $length=false, $firstRun=true) {
         foreach($input as $key1 => $val1) {
             if(is_array($input[$key1])) {
                 $op .= '<tr class="rounded">'.$nl;
-                $op .= '<td class="fe-array-name rounded" data-toggle="tooltip" data-placement="top" title="count( '.count($input[$key1]).' )">[\''.$key1.'\']</td>'.$nl;
+                $op .= '<td class="fe-array-name rounded" data-toggle="tooltip" data-placement="top" data-bs-placement="top" title="count( '.count($input[$key1]).' )">[\''.$key1.'\']</td>'.$nl;
                 $op .= '<td class="fe-array-child rounded">'.$nl;
                 $op .= fe($input[$key1], $length, false);
                 $op .= '</td>'.$nl;
                 $op .= '</tr>'.$nl;
             } else {
-                $op .= '<tr data-toggle="tooltip" data-placement="right" data-html="true" title="gettype( '.strtoupper(gettype($val1)).' )<br>strlen( '.(is_null($val1) ? '' : strlen($val1)).' )">'.$nl;
+                $op .= '<tr data-toggle="tooltip" data-placement="right" data-bs-placement="right" data-html="true" data-bs-html="true" title="gettype( '.strtoupper(gettype($val1)).' )<br>strlen( '.(is_null($val1) ? '' : strlen($val1)).' )">'.$nl;
                 $op .= '<td class="fe-array-key rounded">[\''.$key1.'\']</td>'.$nl;
                 $op .= '<td class="fe-array-var rounded">';
                 $op .= feValueHelper($val1, $length);
@@ -79,7 +79,7 @@ function fe($input, $length=false, $firstRun=true) {
         $op .= '</table>'.$nl;
     } else {
         $op .= '<table class="fe-table-outer rounded">'.$nl;
-        $op .= '<tr data-toggle="tooltip" data-placement="right" data-html="true" title="gettype( '.strtoupper(gettype($input)).' )<br>strlen( '.strlen($input).' )">'.$nl;
+        $op .= '<tr data-toggle="tooltip" data-placement="right" data-bs-placement="right" data-html="true" data-bs-html="true" title="gettype( '.strtoupper(gettype($input)).' )<br>strlen( '.strlen($input).' )">'.$nl;
         $op .= '<td class="fe-array-key rounded">NOT ARRAY:</td>'.$nl;
         $op .= '<td class="fe-array-var rounded">';
         $op .= feValueHelper($input, $length);
